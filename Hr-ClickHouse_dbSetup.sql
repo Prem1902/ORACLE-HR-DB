@@ -5,26 +5,26 @@ CREATE DATABASE hr;
 -- Use the database
 USE hr;
 
--- Creating tables
+-- Creating tables with Nullable types
 CREATE TABLE hr.regions (
     region_id UInt32,
-    region_name String
+    region_name Nullable(String)
 ) ENGINE = MergeTree()
 ORDER BY region_id;
 
 CREATE TABLE hr.countries (
     country_id String,
-    country_name String,
+    country_name Nullable(String),
     region_id UInt32
 ) ENGINE = MergeTree()
 ORDER BY country_id;
 
 CREATE TABLE hr.locations (
     location_id UInt32,
-    street_address String,
-    postal_code String,
+    street_address Nullable(String),
+    postal_code Nullable(String),
     city String,
-    state_province String,
+    state_province Nullable(String),
     country_id String
 ) ENGINE = MergeTree()
 ORDER BY location_id;
@@ -32,7 +32,7 @@ ORDER BY location_id;
 CREATE TABLE hr.departments (
     department_id UInt32,
     department_name String,
-    manager_id UInt32,
+    manager_id Nullable(UInt32), 
     location_id UInt32
 ) ENGINE = MergeTree()
 ORDER BY department_id;
@@ -40,32 +40,32 @@ ORDER BY department_id;
 CREATE TABLE hr.jobs (
     job_id String,
     job_title String,
-    min_salary Decimal(8, 0),
-    max_salary Decimal(8, 0)
+    min_salary Nullable(Decimal(8, 0)),
+    max_salary Nullable(Decimal(8, 0)) 
 ) ENGINE = MergeTree()
 ORDER BY job_id;
 
 CREATE TABLE hr.employees (
     employee_id UInt32,
-    first_name String,
-    last_name String,
-    email String,
-    phone_number String,
+    first_name Nullable(String),
+    last_name Nullable(String),
+    email Nullable(String),
+    phone_number Nullable(String),
     hire_date Date,
     job_id String,
-    salary Decimal(8, 2),
-    commission_pct Decimal(2, 2),
-    manager_id UInt32,
-    department_id UInt32
+    salary Nullable(Decimal(8, 2)),    
+    commission_pct Nullable(Decimal(2, 2)),
+    manager_id Nullable(UInt32), 
+    department_id Nullable(UInt32)
 ) ENGINE = MergeTree()
 ORDER BY employee_id;
 
 CREATE TABLE hr.job_history (
     employee_id UInt32,
     start_date Date,
-    end_date Date,
+    end_date Nullable(Date), 
     job_id String,
-    department_id UInt32
+    department_id Nullable(UInt32) 
 ) ENGINE = MergeTree()
 ORDER BY (employee_id, start_date);
 
@@ -94,10 +94,3 @@ JOIN hr.locations l ON d.location_id = l.location_id
 JOIN hr.countries c ON l.country_id = c.country_id
 JOIN hr.regions r ON c.region_id = r.region_id
 JOIN hr.jobs j ON e.job_id = j.job_id;
-
-
-
-
-
-
-
